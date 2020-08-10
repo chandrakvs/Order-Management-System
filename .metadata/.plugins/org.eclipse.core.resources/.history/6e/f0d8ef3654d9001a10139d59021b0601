@@ -1,0 +1,20 @@
+package com.hcl.order.entity;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class OrderServiceItem {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int orderServiceItemId;
+	
+	private int orderItemId;
+	
+	private int orderId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "orderId",insertable = false, updatable = false)
+	private Order order;
+}

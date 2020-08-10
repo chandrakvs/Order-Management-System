@@ -1,0 +1,6 @@
+package com.hcl.order.item.exception;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+}

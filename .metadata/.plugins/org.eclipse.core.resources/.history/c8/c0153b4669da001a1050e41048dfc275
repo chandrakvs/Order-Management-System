@@ -1,0 +1,27 @@
+package com.hcl.order.item.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hcl.order.item.dao.OrderItemRepository;
+import com.hcl.order.item.dto.OrderItemDto;
+import com.hcl.order.item.entity.OrderItem;
+
+@Service
+public class OrderItemService {
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
+	public void saveOrderItem(OrderItemDto orderItemDto) {
+		orderItemRepository.save(orderItemDto);
+		}
+	
+	public List<OrderItem> getOrderItems() {
+		List<OrderItem> orderItems = new ArrayList<>();
+		orderItemRepository.findAll().forEach(orderItems::add);
+		return orderItems;
+		}
+}

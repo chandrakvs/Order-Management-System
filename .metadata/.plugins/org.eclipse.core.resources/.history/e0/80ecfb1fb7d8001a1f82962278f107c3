@@ -1,0 +1,21 @@
+package com.hcl.order.item.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hcl.order.item.dao.OrderItem;
+import com.hcl.order.item.dao.OrderItemRepository;
+
+@Service
+public class OrderItemService {
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
+	public void saveOrderItem(OrderItem orderItem) {
+		orderItemRepository.save(orderItem);
+		}
+	public void getOrderItems() {
+		List<OrderItemDto> orderItems = new ArrayList<>();
+		orderItemRepository.findAll();
+		}
+}

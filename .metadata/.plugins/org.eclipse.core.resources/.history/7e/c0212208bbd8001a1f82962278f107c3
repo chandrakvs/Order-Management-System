@@ -1,0 +1,6 @@
+package com.hcl.order.dao;
+
+@Repository
+public interface OrderRepository {
+
+}

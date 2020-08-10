@@ -1,0 +1,9 @@
+package com.hcl.order.feignclient;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name="OrderItem",url="localhost:8081")
+public class OrderItemServiceFeignClient {
+	//@GetMapping("/orderItems/order-items")
+	//public StandardResponse<List<OrderItemsDto>> OrderedItems();
+}

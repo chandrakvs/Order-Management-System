@@ -1,0 +1,42 @@
+package com.hcl.order.item.dto;
+
+import javax.validation.constraints.NotNull;
+
+public class OrderItemDto {
+	
+     private int orderItemId;
+     @NotNull
+     @Size(min=2, message="Product code should have at least 2 characters")
+     private String productCode;
+     @NotNull
+     @Size(min=2, message="Product code should have at least 2 characters")
+     private String productName;
+     @NotNull
+     private int quantity;     
+	
+	public int getOrderItemId() {
+		return orderItemId;
+	}
+	public void setOrderItemId(int orderItemId) {
+		this.orderItemId = orderItemId;
+	}
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+     
+}

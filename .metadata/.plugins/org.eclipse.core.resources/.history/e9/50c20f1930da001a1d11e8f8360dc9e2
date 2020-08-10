@@ -1,0 +1,7 @@
+package com.hcl.order.feignclient;
+
+@FeignClient(name="OrderItem",url="localhost:8083")
+public class OrderItemServiceFeignClient {
+	@GetMapping("/orderItems/order-items")
+	public StandardResponse<List<OrderItemsDto>> OrderedItems();
+}
