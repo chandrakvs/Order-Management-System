@@ -24,6 +24,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<Object>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 	
+	@ExceptionHandler(DataBaseException.class)
+    public final ResponseEntity<Object> databaseError(Exception exception, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(exception.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("Failed to save order Items", details);
+        return new ResponseEntity<Object>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	
 	@ExceptionHandler(OrderItemsNotFoundException.class)
     public final ResponseEntity<Object> handleOrderItemNotFoundException(OrderItemsNotFoundException recordNotFoundException, WebRequest request) {
         List<String> details = new ArrayList<>();

@@ -1,0 +1,71 @@
+package com.hcl.order.item.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hcl.order.item.dao.OrderItemRepository;
+import com.hcl.order.item.dto.OrderItemDto;
+import com.hcl.order.item.entity.OrderItem;
+import com.hcl.order.item.exception.OrderItemsNotFoundException;
+
+@Service
+public class OrderItemService {
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
+	public void saveOrderItem(OrderItemDto orderItemDto) {
+		OrderItem orderItem=new OrderItem();
+		orderItem.setOrderItemId(orderItemDto.getOrderItemId());
+		orderItem.setProductName(orderItemDto.getProductName());
+		orderItem.setProductCode(orderItemDto.getProductCode());
+		orderItem.setQuantity(orderItemDto.getQuantity());
+		try {
+		orderItemRepository.save(orderItem);
+		}catch(Exception exception) {
+		    throw new SQLException(exception);
+		}
+	
+	public List<OrderItemDto> listOrderItems() {
+		List<OrderItemDto> orderItemDtos = new ArrayList<>();
+		Iterable<OrderItem> orderItems=orderItemRepository.findAll();
+		if(orderItems.iterator().hasNext()) {
+			orderItems.forEach(orderItem -> {
+				OrderItemDto orderItemDto = new OrderItemDto();
+				orderItemDto.setOrderItemId(orderItem.getOrderItemId());
+				orderItemDto.setProductName(orderItem.getProductName());
+				orderItemDto.setProductCode(orderItem.getProductCode());
+				orderItemDto.setQuantity(orderItem.getQuantity());
+				orderItemDtos.add(orderItemDto);
+			});
+		return orderItemDtos;
+		
+	}else {
+		throw new OrderItemsNotFoundException("Order items are not available.");
+	}
+}		
+		
+	public List<OrderItemDto> listSelectedOrderItems(List<Integer> orderItemIds) {
+		System.out.println(orderItemIds);
+			List<OrderItemDto> orderItemDtos = new ArrayList<>();
+			Iterable<OrderItem> orderItems=orderItemRepository.findAllById(orderItemIds);
+			System.out.println(orderItems.toString());
+			if(orderItems.toString().length()!=0) {
+				orderItems.forEach(orderItem -> {
+					OrderItemDto orderItemDto = new OrderItemDto();
+					orderItemDto.setOrderItemId(orderItem.getOrderItemId());
+					orderItemDto.setProductName(orderItem.getProductName());
+					orderItemDto.setProductCode(orderItem.getProductCode());
+					orderItemDto.setQuantity(orderItem.getQuantity());
+					orderItemDtos.add(orderItemDto);
+				});
+			return orderItemDtos;
+			
+		}else {
+			throw new OrderItemsNotFoundException("Order items are not available.");
+		}	
+  }
+}
+

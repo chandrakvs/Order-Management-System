@@ -11,7 +11,7 @@
 	</section>
 	<section name="completion_proposal_size">
 		<item key="size.x" value="216"/>
-		<item key="size.y" value="243"/>
+		<item key="size.y" value="252"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
@@ -86,5 +86,10 @@
 		<item key="patterns" value="*"/>
 		<item key="updateSimilarElements" value="false"/>
 		<item key="updateSimilarElementsMatchStrategy" value="1"/>
+	</section>
+	<section name="JavaSearchPage">
+		<item key="CASE_SENSITIVE" value="false"/>
+		<item key="INCLUDE_MASK" value="11"/>
+		<item key="HISTORY_SIZE" value="0"/>
 	</section>
 </section>

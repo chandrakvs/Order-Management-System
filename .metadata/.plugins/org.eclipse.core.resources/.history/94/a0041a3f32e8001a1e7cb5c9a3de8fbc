@@ -1,0 +1,111 @@
+package com.hcl.order.service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hcl.order.dao.OrderRepository;
+import com.hcl.order.dto.OrderDto;
+import com.hcl.order.dto.OrderItemDto;
+import com.hcl.order.entity.Order;
+import com.hcl.order.exception.OrdersNotFoundException;
+import com.hcl.order.feignclient.OrderItemServiceFeignClient;
+
+@Service
+public class OrderService {
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private OrderItemServiceFeignClient orderItemsServiceFeignClient;
+	
+	public void createOrder(OrderDto orderDto) {
+
+	List<OrderItemDto> orderedItemsDtos=orderItemsServiceFeignClient.listSelectedOrderItems(orderDto.getOrderItemIds());
+		
+	if(orderedItemsDtos.size()!=0) {
+		Order order=new Order();
+		order.setCustomerName(orderDto.getCustomerName());
+		order.setOrderDate(orderDto.getOrderDate());
+		order.setShippingAddress(orderDto.getShippingAddress());
+		order.setTotal(orderDto.getTotal());
+	    order.setOrderItemIds(orderDto.getOrderItemIds().toString());
+	    orderRepository.save(order);
+	  }else {
+		  System.out.println(" Order Items are not available ");
+	  }
+	
+	}
+	
+	public List<OrderDto> ordersList(){
+		
+	//	List<String> orderItemIdsList = orderRepository.getOrderItemIds();
+		
+		String orderItemIds = String.join(",", orderRepository.getOrderItemIds());
+		 
+		System.out.println("orderItemIds "+orderItemIds);
+		
+		List<OrderItemDto> orderedItemsDtos=orderItemsServiceFeignClient.listSelectedOrderItems(orderItemIds);
+		
+		Iterable<Order> ordersList=orderRepository.findAll();
+		
+		List<OrderDto> orderDtos = new ArrayList<>();
+		
+		if(ordersList.iterator().hasNext()) {
+			
+			ordersList.forEach(order -> {
+				OrderDto orderDto = new OrderDto();
+				orderDto.setOrderId(order.getOrderId());
+				orderDto.setCustomerName(order.getCustomerName());
+				orderDto.setOrderDate(order.getOrderDate());
+				orderDto.setShippingAddress(order.getShippingAddress());
+				orderDto.setTotal(order.getTotal());
+				List<OrderItemDto> orderedItemDtos = new ArrayList<>();
+				List<Integer> orderItemIdsList = Stream.of(order.getOrderItemIds().split(",")).map(Integer::parseInt).collect(Collectors.toList());
+				orderedItemsDtos.forEach(orderItemDto -> { if(orderItemIdsList.contains(orderItemDto.getOrderItemId())) {
+					orderedItemDtos.add(orderItemDto);
+				    }
+				  }
+				);
+				orderDto.setOrderItems(orderedItemDtos);
+				orderDtos.add(orderDto);
+			}
+			
+		);
+			
+			
+			
+	/*		
+		for(Order order: ordersList) {
+			OrderDto orderDto = new OrderDto();
+			orderDto.setOrderId(order.getOrderId());
+			orderDto.setCustomerName(order.getCustomerName());
+			orderDto.setOrderDate(order.getOrderDate());
+			orderDto.setShippingAddress(order.getShippingAddress());
+			orderDto.setTotal(order.getTotal());
+	/*		List<OrderItem> orderedItems = order.getOrderItems();
+			List<OrderItemDto> orderedItemDtos = new ArrayList<>();
+			for (OrderItem orderItem:orderedItems) {
+				OrderItemDto orderItemDto = new OrderItemDto();
+				orderItemDto.setOrderItemId(orderItem.getOrderItemId());
+				orderItemDto.setProductName(orderItem.getProductName());
+				orderItemDto.setProductCode(orderItem.getProductCode());
+				orderItemDto.setQuantity(orderItem.getQuantity());
+				orderedItemDtos.add(orderItemDto);
+			}
+			orderDto.setOrderItems(orderedItemDtos);
+			orderDtos.add(orderDto);
+		}
+		*/
+		return orderDtos;
+	}else {
+		throw new OrdersNotFoundException("Orders are not available.");
+	}
+  }
+}

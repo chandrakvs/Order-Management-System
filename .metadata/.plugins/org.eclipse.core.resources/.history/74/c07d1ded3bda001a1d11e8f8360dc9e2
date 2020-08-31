@@ -1,5 +1,0 @@
-package com.hcl.order.dao;
-
-public interface OrderItemRepository {
-
-}

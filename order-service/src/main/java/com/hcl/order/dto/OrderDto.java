@@ -9,8 +9,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import lombok.Data;
+
+@Data
 public class OrderDto {
-	
 	
 	private int orderId;
 	
@@ -33,41 +35,6 @@ public class OrderDto {
 	
 	private List<OrderItemDto> orderItems;
 	
-	public List<OrderItemDto> getOrderItems() {
-		return orderItems;
-	}
-	public void setOrderItems(List<OrderItemDto> orderItems) {
-		this.orderItems = orderItems;
-	}
-	
-	public int getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public Date getOrderDate() {
-		return orderDate;
-	}
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
-	}
-	public String getShippingAddress() {
-		return shippingAddress;
-	}
-	public void setShippingAddress(String shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
-	public double getTotal() {
-		return total;
-	}
-	public void setTotal(double total) {
-		this.total = total;
-	}
+	private String orderItemIds;
+
 }

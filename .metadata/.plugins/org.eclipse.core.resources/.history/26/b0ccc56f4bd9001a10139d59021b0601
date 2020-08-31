@@ -1,5 +1,0 @@
-package com.hcl.order.dto;
-
-public class OrderItemDto {
-
-}

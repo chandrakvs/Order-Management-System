@@ -1,5 +1,0 @@
-package com.hcl.order.entity;
-
-public class OrderServiceItem {
-
-}

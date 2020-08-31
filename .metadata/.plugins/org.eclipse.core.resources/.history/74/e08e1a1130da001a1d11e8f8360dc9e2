@@ -1,6 +1,0 @@
-package com.hcl.order.feignclient;
-
-@FeignClient(name="OrderItem",url="localhost:8083")
-public class OrderItemServiceFeignClient {
-
-}

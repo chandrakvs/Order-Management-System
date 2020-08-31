@@ -1,12 +1,14 @@
 package com.hcl.order.item.dto;
 
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import lombok.Data;
+
+@Data
 public class OrderItemDto {
 	
      private int orderItemId;
@@ -26,29 +28,4 @@ public class OrderItemDto {
      @Positive
      private int quantity;     
 	
-	public int getOrderItemId() {
-		return orderItemId;
-	}
-	public void setOrderItemId(int orderItemId) {
-		this.orderItemId = orderItemId;
-	}
-	public String getProductCode() {
-		return productCode;
-	}
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
-	}
-	public String getProductName() {
-		return productName;
-	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-     
 }
