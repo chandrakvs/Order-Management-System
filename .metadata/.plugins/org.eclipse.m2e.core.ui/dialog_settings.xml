@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="F:\Microservices_Workspaces\OrderManagementSystem\eureka-server"/>
 			<item value="F:\Microservices_Workspaces\OrderManagementSystem\order-service"/>
 			<item value="F:\Microservices_Workspaces\OrderManagementSystem\order-items-service"/>
 		</list>

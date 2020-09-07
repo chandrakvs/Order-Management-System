@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,6 @@ import com.hcl.order.item.service.OrderItemService;
 
 @RestController
 @RequestMapping(path="/orderitems")
-@CrossOrigin(origins = "*")
 public class OrderItemController {
 	
 	private static Logger LOGGER = LogManager.getLogger(OrderItemController.class);
@@ -60,10 +58,7 @@ public class OrderItemController {
 	    List<Integer> orderItemIdsList = Stream.of(orderItemIds.split(",")).map(Integer::parseInt).collect(Collectors.toList());
 		List<OrderItemDto> orderItemDtos=orderItemService.listSelectedOrderItems(orderItemIdsList);
 		LOGGER.info("OrderItemController : listSelectedOrderItems() is ended.");
-		if(orderItemDtos.size()==0)
-			 return new ResponseEntity<Object>("Selected Order Items are not available.",HttpStatus.OK);
-		else
-			 return new ResponseEntity<Object>(orderItemDtos,HttpStatus.OK);
+    	return new ResponseEntity<Object>(orderItemDtos,HttpStatus.OK);
 	}	
 
 }

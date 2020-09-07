@@ -1,0 +1,13 @@
+hystrix: 
+  command: 
+    default: 
+      execution: 
+        isolation: 
+          thread: 
+            timeoutInMilliseconds: 600000
+
+ribbon: 
+  ReadTimeout: 600000000
+  connection-timeout: 600000000
+  eureka: 
+    enabled: true      

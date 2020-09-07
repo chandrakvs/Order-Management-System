@@ -54,18 +54,20 @@ public class OrderItemService {
 	public List<OrderItemDto> listSelectedOrderItems(List<Integer> orderItemIds) {
 		    LOGGER.debug("OrderItemService : "+"Selected order items : "+orderItemIds);
 			List<OrderItemDto> orderItemDtos = new ArrayList<>();
-			Iterable<OrderItem> orderItems=orderItemRepository.findAllById(orderItemIds);
-			if(orderItems.toString().length()!=0) {
-				orderItems.forEach(orderItem -> {
-					OrderItemDto orderItemDto = new OrderItemDto();
-					orderItemDto.setOrderItemId(orderItem.getOrderItemId());
-					orderItemDto.setProductName(orderItem.getProductName());
-					orderItemDto.setProductCode(orderItem.getProductCode());
-					orderItemDto.setQuantity(orderItem.getQuantity());
-					orderItemDtos.add(orderItemDto);
-				});
-				
-			}
+			if(orderItemRepository.count()!=0) {
+				Iterable<OrderItem> orderItems=orderItemRepository.findAllById(orderItemIds);
+				if(orderItems.toString().length()!=0) {
+					orderItems.forEach(orderItem -> {
+						OrderItemDto orderItemDto = new OrderItemDto();
+						orderItemDto.setOrderItemId(orderItem.getOrderItemId());
+						orderItemDto.setProductName(orderItem.getProductName());
+						orderItemDto.setProductCode(orderItem.getProductCode());
+						orderItemDto.setQuantity(orderItem.getQuantity());
+						orderItemDtos.add(orderItemDto);
+					});
+					
+				}
+		    }
 			return orderItemDtos;
    }
 }

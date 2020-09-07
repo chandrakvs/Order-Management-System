@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.hcl.order.dto.OrderItemDto;
 
-@FeignClient(name="OrderItem",url="localhost:8081")
+@FeignClient(name="order-items-service")
 public interface OrderItemServiceFeignClient {
 	
 	@RequestMapping(value = "/orderitems/{orderItemIds}", method = RequestMethod.GET)
