@@ -1,8 +1,6 @@
 package com.hcl.order.item.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -12,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcl.order.item.dto.OrderItemDto;
@@ -51,12 +49,11 @@ public class OrderItemController {
 		 return new ResponseEntity<Object>(orderItemDtos,HttpStatus.OK);	
 	}
 	
-	@GetMapping("/{orderItemIds}")
-	public ResponseEntity<Object> listSelectedOrderItems(@PathVariable String orderItemIds)
+	@GetMapping("/selectedorderitems")
+	public ResponseEntity<Object> listSelectedOrderItems(@RequestParam("orderItemIds") List<Integer> orderItemIds)
 	{   
 		LOGGER.info("OrderItemController : listSelectedOrderItems()  is started.");
-	    List<Integer> orderItemIdsList = Stream.of(orderItemIds.split(",")).map(Integer::parseInt).collect(Collectors.toList());
-		List<OrderItemDto> orderItemDtos=orderItemService.listSelectedOrderItems(orderItemIdsList);
+		List<OrderItemDto> orderItemDtos=orderItemService.listSelectedOrderItems(orderItemIds);
 		LOGGER.info("OrderItemController : listSelectedOrderItems() is ended.");
     	return new ResponseEntity<Object>(orderItemDtos,HttpStatus.OK);
 	}	

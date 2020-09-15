@@ -1,6 +1,7 @@
 package com.hcl.order.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,9 +32,7 @@ public class OrderService {
 	private OrderItemServiceFeignClient orderItemsServiceFeignClient;
 	
 	public ResponseEntity<String> createOrder(OrderDto orderDto) {
-
 	List<OrderItemDto> orderedItemsDtos=orderItemsServiceFeignClient.listSelectedOrderItems(orderDto.getOrderItemIds());
-		
 	if(orderedItemsDtos.size()!=0) {
 		LOGGER.debug("OrderService : "+"CustomerName : "+orderDto.getCustomerName()+"OrderDate : "+orderDto.getOrderDate()+"ShippingAddress : "+orderDto.getShippingAddress()+"OrderTotal : "+orderDto.getTotal()+"OrderItemIds : "+orderDto.getOrderItemIds().toString());
 		Order order=new Order();
@@ -41,7 +40,7 @@ public class OrderService {
 		order.setOrderDate(orderDto.getOrderDate());
 		order.setShippingAddress(orderDto.getShippingAddress());
 		order.setTotal(orderDto.getTotal());
-	    order.setOrderItemIds(orderDto.getOrderItemIds().toString());
+	    order.setOrderItemIds(orderDto.getOrderItemIds().toString().substring(1, orderDto.getOrderItemIds().toString().length()-1));
 	    try {
 	    orderRepository.save(order);
 	    }
@@ -53,21 +52,15 @@ public class OrderService {
 	  }else {
 		return new ResponseEntity<String>("Order Item details are not available.", HttpStatus.BAD_REQUEST);
 	  }
-	
 	}
 	
 	public List<OrderDto> ordersList(){
-		
-		Iterable<Order> ordersList=orderRepository.findAll();
-		
+		List<Order> ordersList=orderRepository.findAll();
 		List<OrderDto> orderDtos = new ArrayList<>();
-		
-		if(ordersList.iterator().hasNext()) {
-			
-			String orderItemIds = String.join(",", orderRepository.getOrderItemIds());
+		if(ordersList.size()!=0) {
+			List<Integer> orderItemIds = ordersList.stream().flatMap(order->Arrays.asList(order.getOrderItemIds().split(",")).stream()).map(s->Integer.parseInt(s.trim())).distinct().collect(Collectors.toList());
 			LOGGER.debug("OrderService : "+"OrderItemIds : "+orderItemIds);
 			List<OrderItemDto> orderedItemsDtos=orderItemsServiceFeignClient.listSelectedOrderItems(orderItemIds);
-			
 			ordersList.forEach(order -> {
 				OrderDto orderDto = new OrderDto();
 				orderDto.setOrderId(order.getOrderId());
@@ -76,18 +69,13 @@ public class OrderService {
 				orderDto.setShippingAddress(order.getShippingAddress());
 				orderDto.setTotal(order.getTotal());
 				List<OrderItemDto> orderedItemDtos = new ArrayList<>();
-				List<Integer> orderItemIdsList = Stream.of(order.getOrderItemIds().split(",")).map(Integer::parseInt).collect(Collectors.toList());
-				orderedItemsDtos.forEach(orderItemDto -> { if(orderItemIdsList.contains(orderItemDto.getOrderItemId())) {
-					orderedItemDtos.add(orderItemDto);
-				    }
-				  }
-				);
+				List<Integer> orderItemIdsList = Stream.of(order.getOrderItemIds().split(",")).map(s->Integer.parseInt(s.trim())).collect(Collectors.toList());
+				orderedItemDtos=orderedItemsDtos.stream().filter(orderItemDto -> orderItemIdsList.stream().anyMatch(orderItemId->orderItemId.equals(orderItemDto.getOrderItemId()))).collect(Collectors.toList());
 				orderDto.setOrderItems(orderedItemDtos);
 				orderDtos.add(orderDto);
-			}
-			
-		);
-	}		
+				}
+			);
+	  }	
 		return orderDtos;
   }
 }

@@ -35,6 +35,6 @@ public class OrderDto {
 	
 	private List<OrderItemDto> orderItems;
 	
-	private String orderItemIds;
+	private List<Integer> orderItemIds;
 
 }

@@ -1,7 +1,6 @@
 package com.hcl.order.entity;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +31,7 @@ public class Order {
 	private double total;
 	
 	private String orderItemIds;
-
-
+	
 	public Order(String customerName, Date orderDate, String shippingAddress, double total) {
 		this.customerName = customerName;
 		this.orderDate = orderDate;

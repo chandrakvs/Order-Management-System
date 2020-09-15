@@ -37,8 +37,8 @@ public class OrderItemService {
 	
 	public List<OrderItemDto> listOrderItems() {
 		List<OrderItemDto> orderItemDtos = new ArrayList<>();
-		Iterable<OrderItem> orderItems=orderItemRepository.findAll();
-		if(orderItems.iterator().hasNext()) {
+		List<OrderItem> orderItems=orderItemRepository.findAll();
+		if(orderItems.size()!=0) {
 			orderItems.forEach(orderItem -> {
 				OrderItemDto orderItemDto = new OrderItemDto();
 				orderItemDto.setOrderItemId(orderItem.getOrderItemId());
@@ -55,8 +55,8 @@ public class OrderItemService {
 		    LOGGER.debug("OrderItemService : "+"Selected order items : "+orderItemIds);
 			List<OrderItemDto> orderItemDtos = new ArrayList<>();
 			if(orderItemRepository.count()!=0) {
-				Iterable<OrderItem> orderItems=orderItemRepository.findAllById(orderItemIds);
-				if(orderItems.toString().length()!=0) {
+				List<OrderItem> orderItems=orderItemRepository.findAllById(orderItemIds);
+				if(orderItems.size()!=0) {
 					orderItems.forEach(orderItem -> {
 						OrderItemDto orderItemDto = new OrderItemDto();
 						orderItemDto.setOrderItemId(orderItem.getOrderItemId());
